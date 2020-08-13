@@ -2,20 +2,22 @@
 #include "ui_mainwindow.h"
 
 #include <string>
-
+#include <QMdiArea>
 #include <QScrollArea>
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QMdiSubWindow>
 #include <QTextEdit>
+#include <QDockWidget>
+
+#include "note.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
-
 }
 
 MainWindow::~MainWindow()
@@ -26,14 +28,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionNew_triggered()
 {
-   /* auto nextTab = new QTextEdit();
-    ui->tabWidget->addTab(nextTab, QString("new%0").arg(ui->tabWidget->count() + 1));
-   */
+    QMdiSubWindow* note = ui->mdiArea->addSubWindow(new Note());
 
-    QMdiSubWindow* window = ui->mdiArea->addSubWindow(new QTextEdit());
-    window->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
-
-    window->show();
+    note->setWindowFlag(Qt::FramelessWindowHint);
+    note->setWindowTitle("new note");
+    note->show();
 
 }
 
